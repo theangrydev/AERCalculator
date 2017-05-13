@@ -42,6 +42,11 @@ public class AERCalculatorActivity extends AppCompatActivity {
     }
 
     public void computeAER(View button) throws ParseException {
+        TextView result = (TextView) findViewById(R.id.aer_result);
+        result.setText(computeAER(extractContributions()));
+    }
+
+    private List<Contribution> extractContributions() throws ParseException {
         TableLayout contributionsTable = contributionsTable();
         int contributionCount = contributionsTable.getChildCount() - 1;
 
@@ -50,9 +55,7 @@ public class AERCalculatorActivity extends AppCompatActivity {
             TableRow contribution = (TableRow) contributionsTable.getChildAt(contributionIndex);
             contributions.add(contribution(date(contribution), amount(contribution)));
         }
-
-        TextView result = (TextView) findViewById(R.id.aer_result);
-        result.setText(computeAER(contributions));
+        return contributions;
     }
 
     private String computeAER(List<Contribution> contributions) {
@@ -68,11 +71,6 @@ public class AERCalculatorActivity extends AppCompatActivity {
         Button inputDate = (Button) contributionRow.findViewById(R.id.input_date);
         String text = inputDate.getText().toString();
         return DateTimeFormat.forPattern("dd/MM/yyyy").parseDateTime(text).withTimeAtStartOfDay();
-//        try {
-//            return new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(text);
-//        } catch (ParseException e) {
-//            return new Date();
-//        }
     }
 
     private double amount(TableRow contributionRow) {
