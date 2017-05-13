@@ -18,11 +18,11 @@ public class AERCalculator {
             double resultAtRate = resultAtRate(contributions, rate, dateToday, valueToday);
             double resultAtRateDerivative = resultAtRateDerivative(contributions, rate, dateToday);
 
-            double newRate = rate - resultAtRate / resultAtRateDerivative;
+            double newRate = Math.max(-1.0, rate - resultAtRate / resultAtRateDerivative);
             double epsilonRate = Math.abs(newRate - rate);
             rate = newRate;
 
-            if (epsilonRate <= MAX_EPSILON || resultAtRate <= MAX_EPSILON) {
+            if (epsilonRate <= MAX_EPSILON) {
                 return rate * 100;
             }
         }
@@ -47,7 +47,7 @@ public class AERCalculator {
         return derivative;
     }
 
-    private double yearsBetween(DateTime date, DateTime firstDate) {
-        return (double) Days.daysBetween(date, firstDate).getDays() / DAYS_IN_YEAR;
+    private double yearsBetween(DateTime date, DateTime dateToday) {
+        return (double) Days.daysBetween(date, dateToday).getDays() / DAYS_IN_YEAR;
     }
 }

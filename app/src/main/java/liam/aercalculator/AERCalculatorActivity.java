@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
-import static java.util.Locale.ENGLISH;
 import static liam.aercalculator.Contribution.contribution;
 
 public class AERCalculatorActivity extends AppCompatActivity {
@@ -28,11 +27,11 @@ public class AERCalculatorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aer_calculator);
-        addContribution(getBaseContext());
     }
 
     public void addContribution(View button) {
-        addContribution(button.getContext());
+        TableLayout tableLayout = contributionsTable();
+        tableLayout.addView(makeContribution(button.getContext()));
     }
 
     public void showDatePicker(View button) {
@@ -42,18 +41,25 @@ public class AERCalculatorActivity extends AppCompatActivity {
     }
 
     public void computeAER(View button) throws ParseException {
+        List<Contribution> contributions = extractContributions();
+        double valueToday = extractValueToday();
+        String aer = computeAER(contributions, valueToday);
+        displayAER(aer);
+    }
+
+    private void displayAER(String aer) {
         TextView result = (TextView) findViewById(R.id.aer_result);
-        result.setText(computeAER(extractContributions(), extractValueToday()));
+        result.setText(aer);
     }
 
     private double extractValueToday() {
-//        TextView valueToday = findViewById(R.d)
-        return 0;
+        EditText valueToday = (EditText) findViewById(R.id.input_value_today);
+        return parseDouble(valueToday);
     }
 
-    private List<Contribution> extractContributions() throws ParseException {
+    private List<Contribution> extractContributions() {
         TableLayout contributionsTable = contributionsTable();
-        int contributionCount = contributionsTable.getChildCount() - 1;
+        int contributionCount = contributionsTable.getChildCount();
 
         List<Contribution> contributions = new ArrayList<>();
         for (int contributionIndex = 0; contributionIndex < contributionCount; contributionIndex++) {
@@ -66,27 +72,32 @@ public class AERCalculatorActivity extends AppCompatActivity {
     private String computeAER(List<Contribution> contributions, double valueToday) {
         try {
             double aer = aerCalculator.computeAER(DateTime.now(), valueToday, contributions);
-            return format(ENGLISH, "%.2f%%", aer);
+            return format(getString(R.string.aer), aer);
         } catch (UnknownAERException unknownAERException) {
-            return "Unknown";
+            return getString(R.string.unknown_aer);
         }
     }
 
-    private DateTime date(TableRow contributionRow) throws ParseException {
+    private DateTime date(TableRow contributionRow) {
         Button inputDate = (Button) contributionRow.findViewById(R.id.input_date);
         String text = inputDate.getText().toString();
-        return DateTimeFormat.forPattern("dd/MM/yyyy").parseDateTime(text).withTimeAtStartOfDay();
+        if (text.equals(getString(R.string.enter))) {
+            return DateTime.now();
+        }
+        return DateTimeFormat.forPattern(getString(R.string.date_format)).parseDateTime(text).withTimeAtStartOfDay();
     }
 
     private double amount(TableRow contributionRow) {
         EditText inputAmount = (EditText) contributionRow.findViewById(R.id.input_amount);
-        return Double.parseDouble(inputAmount.getText().toString());
+        return parseDouble(inputAmount);
     }
 
-    private void addContribution(Context context) {
-        TableLayout tableLayout = contributionsTable();
-        tableLayout.addView(makeContribution(context), tableLayout.getChildCount() - 1);
-        tableLayout.requestLayout();
+    private double parseDouble(EditText numberInput) {
+        try {
+            return Double.parseDouble(numberInput.getText().toString());
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 
     private TableLayout contributionsTable() {
@@ -105,12 +116,14 @@ public class AERCalculatorActivity extends AppCompatActivity {
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             DateTime today = DateTime.now();
-            return new DatePickerDialog(getActivity(), this, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth());
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth());
+            datePickerDialog.getDatePicker().setMaxDate(today.plusDays(-1).getMillis());
+            return datePickerDialog;
         }
 
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            button.setText(format(ENGLISH, "%02d/%02d/%d", dayOfMonth, month, year));
+            button.setText(format(getString(R.string.date_format_parts), dayOfMonth, month + 1, year));
         }
 
         public void setButton(Button button) {
