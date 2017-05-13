@@ -1,4 +1,4 @@
-package liam.aercalculator;
+package io.github.theangrydev.aercalculator;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -16,6 +16,6 @@ public class AERCalculatorApplicationTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("liam.aercalculator", appContext.getPackageName());
+        assertEquals("io.github.theangrydev.aercalculator", appContext.getPackageName());
     }
 }

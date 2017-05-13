@@ -1,4 +1,4 @@
-package liam.aercalculator;
+package io.github.theangrydev.aercalculator;
 
 import org.joda.time.DateTime;
 import org.joda.time.Days;

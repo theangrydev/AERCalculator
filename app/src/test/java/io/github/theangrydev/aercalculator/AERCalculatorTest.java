@@ -1,13 +1,13 @@
-package liam.aercalculator;
+package io.github.theangrydev.aercalculator;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.util.List;
 
+import static io.github.theangrydev.aercalculator.Contribution.contribution;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
-import static liam.aercalculator.Contribution.contribution;
 import static org.junit.Assert.assertEquals;
 
 public class AERCalculatorTest {

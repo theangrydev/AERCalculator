@@ -1,4 +1,4 @@
-package liam.aercalculator;
+package io.github.theangrydev.aercalculator;
 
 import android.app.Application;
 import net.danlew.android.joda.JodaTimeAndroid;

@@ -1,4 +1,4 @@
-package liam.aercalculator;
+package io.github.theangrydev.aercalculator;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
+import io.github.theangrydev.aercalculator.R;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -18,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.lang.String.format;
-import static liam.aercalculator.Contribution.contribution;
 
 public class AERCalculatorActivity extends AppCompatActivity {
 
@@ -72,7 +72,7 @@ public class AERCalculatorActivity extends AppCompatActivity {
         List<Contribution> contributions = new ArrayList<>();
         for (int contributionIndex = 0; contributionIndex < contributionCount; contributionIndex++) {
             TableRow contribution = (TableRow) contributionsTable.getChildAt(contributionIndex);
-            contributions.add(contribution(date(contribution), amount(contribution)));
+            contributions.add(Contribution.contribution(date(contribution), amount(contribution)));
         }
         return contributions;
     }
