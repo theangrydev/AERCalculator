@@ -3,8 +3,10 @@ package liam.aercalculator;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -22,42 +24,24 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        setUpDateButton();
-        setUpAddMoreButton();
     }
 
-    private void setUpAddMoreButton() {
-        final Button button = (Button) findViewById(R.id.enter_more_button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                addContribution();
-            }
-        });
-    }
-
-    private void setUpDateButton() {
-        final Button button = (Button) findViewById(R.id.input_date);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showDatePicker(button);
-            }
-        });
-    }
-
-    private void addContribution() {
+    public void addContribution(View view) {
         TableLayout tableLayout = (TableLayout) findViewById(R.id.contributions_table);
-//        TableRow tableRow = (TableRow) tableLayout.getChildAt(0);
-
-        TableRow tableRow = new TableRow(tableLayout.getContext());
-        tableLayout.addView(tableRow, tableLayout.getChildCount() - 1);
+        tableLayout.addView(makeContribution(view.getContext()), tableLayout.getChildCount() - 1);
     }
 
-    private void showDatePicker(Button button) {
+    public void showDatePicker(View button) {
         DatePickerFragment datePicker = new DatePickerFragment();
-        datePicker.setButton(button);
+        datePicker.setButton((Button) button);
         datePicker.show(getFragmentManager(), "datePicker");
+    }
+
+    private TableRow makeContribution(Context context) {
+        LayoutInflater layoutInflater = getLayoutInflater();
+        TableRow contribution = new TableRow(context);
+        layoutInflater.inflate(R.layout.contribution, contribution);
+        return contribution;
     }
 
     public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {

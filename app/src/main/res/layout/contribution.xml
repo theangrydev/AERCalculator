@@ -18,7 +18,8 @@
         android:id="@+id/input_date"
         android:elevation="1dp"
         android:text="@string/enter"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:onClick="showDatePicker"/>
 
     <TextView
         android:text="@string/amount"
