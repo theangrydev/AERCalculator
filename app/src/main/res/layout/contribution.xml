@@ -5,36 +5,36 @@
           android:id="@+id/input_contribution">
 
     <TextView
-        android:text="@string/date"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
         android:id="@+id/label_date"
         android:labelFor="@+id/input_date"
-        android:layout_weight="0.5"/>
-
-    <Button
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_weight="0.5"
+        android:text="@string/date"/>
+
+    <Button
         android:id="@+id/input_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:elevation="1dp"
         android:text="@string/enter"
-        android:layout_weight="1"
         android:onClick="showDatePicker"/>
 
     <TextView
-        android:text="@string/amount"
+        android:id="@+id/label_amount"
+        android:labelFor="@+id/input_amount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:id="@+id/label_amount"
         android:layout_weight="0.5"
-        android:layout_marginStart="10dp"/>
+        android:layout_marginStart="10dp"
+        android:text="@string/amount"/>
 
     <EditText
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"
-        android:ems="10"
         android:id="@+id/input_amount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_width="0dp"/>
+        android:inputType="numberDecimal"/>
 
 </TableRow>
