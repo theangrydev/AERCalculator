@@ -9,16 +9,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 
-import java.math.BigDecimal;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static java.lang.String.format;
 import static java.util.Locale.ENGLISH;
+import static liam.aercalculator.Contribution.contribution;
 
-public class MainActivity extends AppCompatActivity {
+public class AERCalculatorActivity extends AppCompatActivity {
 
     private final AERCalculator aerCalculator = new AERCalculator();
 
@@ -46,27 +48,36 @@ public class MainActivity extends AppCompatActivity {
         List<Contribution> contributions = new ArrayList<>();
         for (int contributionIndex = 0; contributionIndex < contributionCount; contributionIndex++) {
             TableRow contribution = (TableRow) contributionsTable.getChildAt(contributionIndex);
-            contributions.add(new Contribution(date(contribution), amount(contribution)));
+            contributions.add(contribution(date(contribution), amount(contribution)));
         }
 
-        BigDecimal aer = aerCalculator.computeAER(contributions);
         TextView result = (TextView) findViewById(R.id.aer_result);
-        result.setText(format(ENGLISH, "%s%%", aer));
+        result.setText(computeAER(contributions));
     }
 
-    private Date date(TableRow contributionRow) throws ParseException {
+    private String computeAER(List<Contribution> contributions) {
+        try {
+            double aer = aerCalculator.computeAER(DateTime.now(), 1, contributions);
+            return format(ENGLISH, "%.2f%%", aer);
+        } catch (UnknownAERException unknownAERException) {
+            return "Unknown";
+        }
+    }
+
+    private DateTime date(TableRow contributionRow) throws ParseException {
         Button inputDate = (Button) contributionRow.findViewById(R.id.input_date);
         String text = inputDate.getText().toString();
-        try {
-            return new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(text);
-        } catch (ParseException e) {
-            return new Date();
-        }
+        return DateTimeFormat.forPattern("dd/MM/yyyy").parseDateTime(text).withTimeAtStartOfDay();
+//        try {
+//            return new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).parse(text);
+//        } catch (ParseException e) {
+//            return new Date();
+//        }
     }
 
-    private BigDecimal amount(TableRow contributionRow) {
+    private double amount(TableRow contributionRow) {
         EditText inputAmount = (EditText) contributionRow.findViewById(R.id.input_amount);
-        return new BigDecimal(inputAmount.getText().toString());
+        return Double.parseDouble(inputAmount.getText().toString());
     }
 
     private void addContribution(Context context) {
@@ -90,11 +101,8 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
-            Calendar today = Calendar.getInstance();
-            int year = today.get(Calendar.YEAR);
-            int month = today.get(Calendar.MONTH);
-            int day = today.get(Calendar.DAY_OF_MONTH);
-            return new DatePickerDialog(getActivity(), this, year, month, day);
+            DateTime today = DateTime.now();
+            return new DatePickerDialog(getActivity(), this, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth());
         }
 
         @Override

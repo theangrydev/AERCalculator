@@ -1,14 +1,17 @@
 package liam.aercalculator;
 
-import java.math.BigDecimal;
-import java.util.Date;
+import org.joda.time.DateTime;
 
 public class Contribution {
-    public final Date date;
-    public final BigDecimal amount;
+    public final DateTime date;
+    public final double amount;
 
-    public Contribution(Date date, BigDecimal amount) {
+    private Contribution(DateTime date, double amount) {
         this.date = date;
         this.amount = amount;
+    }
+
+    public static Contribution contribution(DateTime date, double amount) {
+        return new Contribution(date, amount);
     }
 }
