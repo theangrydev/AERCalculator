@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 
 import java.util.Calendar;
 
@@ -21,6 +23,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setUpDateButton();
+        setUpAddMoreButton();
+    }
+
+    private void setUpAddMoreButton() {
+        final Button button = (Button) findViewById(R.id.enter_more_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addContribution();
+            }
+        });
     }
 
     private void setUpDateButton() {
@@ -28,11 +41,23 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatePickerFragment datePicker = new DatePickerFragment();
-                datePicker.setButton(button);
-                datePicker.show(getFragmentManager(), "datePicker");
+                showDatePicker(button);
             }
         });
+    }
+
+    private void addContribution() {
+        TableLayout tableLayout = (TableLayout) findViewById(R.id.contributions_table);
+//        TableRow tableRow = (TableRow) tableLayout.getChildAt(0);
+
+        TableRow tableRow = new TableRow(tableLayout.getContext());
+        tableLayout.addView(tableRow, tableLayout.getChildCount() - 1);
+    }
+
+    private void showDatePicker(Button button) {
+        DatePickerFragment datePicker = new DatePickerFragment();
+        datePicker.setButton(button);
+        datePicker.show(getFragmentManager(), "datePicker");
     }
 
     public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
