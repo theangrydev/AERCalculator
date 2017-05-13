@@ -1,1 +1,1 @@
-This is a simple application that allows you to compute AER.
+This is a simple application that allows you to compute AER
