@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">AER Calculator</string>
+    <string name="contributions_header_text">Contributions</string>
+    <string name="compute_aer">Compute AER</string>
+    <string name="date">Date:</string>
+    <string name="amount">Amount:</string>
+    <string name="enter">Enter</string>
+</resources>
