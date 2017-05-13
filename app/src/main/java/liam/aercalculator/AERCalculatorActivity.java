@@ -43,7 +43,12 @@ public class AERCalculatorActivity extends AppCompatActivity {
 
     public void computeAER(View button) throws ParseException {
         TextView result = (TextView) findViewById(R.id.aer_result);
-        result.setText(computeAER(extractContributions()));
+        result.setText(computeAER(extractContributions(), extractValueToday()));
+    }
+
+    private double extractValueToday() {
+//        TextView valueToday = findViewById(R.d)
+        return 0;
     }
 
     private List<Contribution> extractContributions() throws ParseException {
@@ -58,9 +63,9 @@ public class AERCalculatorActivity extends AppCompatActivity {
         return contributions;
     }
 
-    private String computeAER(List<Contribution> contributions) {
+    private String computeAER(List<Contribution> contributions, double valueToday) {
         try {
-            double aer = aerCalculator.computeAER(DateTime.now(), 1, contributions);
+            double aer = aerCalculator.computeAER(DateTime.now(), valueToday, contributions);
             return format(ENGLISH, "%.2f%%", aer);
         } catch (UnknownAERException unknownAERException) {
             return "Unknown";
