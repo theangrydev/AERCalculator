@@ -12,12 +12,13 @@ import io.github.theangrydev.aercalculator.R;
 import io.github.theangrydev.aercalculator.model.Contribution;
 import io.github.theangrydev.aercalculator.presenter.AERCalculatorPresenter;
 import io.github.theangrydev.aercalculator.presenter.AERCalculatorView;
-import io.github.theangrydev.aercalculator.presenter.ContributionAdapter;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
 import java.util.List;
+
+7
 
 public class AERCalculatorActivity extends AppCompatActivity implements AERCalculatorView {
 

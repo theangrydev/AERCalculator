@@ -1,4 +1,4 @@
-package io.github.theangrydev.aercalculator.presenter;
+package io.github.theangrydev.aercalculator.view;
 
 import android.content.Context;
 import android.text.Editable;
@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import io.github.theangrydev.aercalculator.R;
 import io.github.theangrydev.aercalculator.model.Contribution;
+import io.github.theangrydev.aercalculator.presenter.AERCalculatorPresenter;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
