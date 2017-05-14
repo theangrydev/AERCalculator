@@ -20,6 +20,16 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true">
 
-        <include layout="@layout/compute_aer"/>
+        <include
+            android:id="@+id/value_today"
+            layout="@layout/value_today"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/value_today">
+
+            <include layout="@layout/compute_aer"/>
+        </RelativeLayout>
     </RelativeLayout>
 </RelativeLayout>
