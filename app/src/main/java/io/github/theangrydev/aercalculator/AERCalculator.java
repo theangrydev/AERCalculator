@@ -1,7 +1,7 @@
 package io.github.theangrydev.aercalculator;
 
-import org.joda.time.DateTime;
 import org.joda.time.Days;
+import org.joda.time.LocalDate;
 
 import java.util.List;
 
@@ -12,7 +12,7 @@ public class AERCalculator {
     private static final double INITIAL_GUESS = 0.1;
     private static final int DAYS_IN_YEAR = 365;
 
-    public double computeAER(DateTime dateToday, double valueToday, List<Contribution> contributions) throws UnknownAERException {
+    public double computeAER(LocalDate dateToday, double valueToday, List<Contribution> contributions) throws UnknownAERException {
         double rate = INITIAL_GUESS;
         for (int iteration = 0; iteration < MAX_ITERATIONS; iteration++) {
             double resultAtRate = resultAtRate(contributions, rate, dateToday, valueToday);
@@ -29,7 +29,7 @@ public class AERCalculator {
         throw new UnknownAERException();
     }
 
-    private double resultAtRate(List<Contribution> contributions, double rate, DateTime dateToday, double valueToday) {
+    private double resultAtRate(List<Contribution> contributions, double rate, LocalDate dateToday, double valueToday) {
         double result = 0;
         for (Contribution contribution : contributions) {
             double yearsInvested = yearsBetween(contribution.date, dateToday);
@@ -38,7 +38,7 @@ public class AERCalculator {
         return result - valueToday;
     }
 
-    private double resultAtRateDerivative(List<Contribution> contributions, double rate, DateTime dateToday) {
+    private double resultAtRateDerivative(List<Contribution> contributions, double rate, LocalDate dateToday) {
         double derivative = 0;
         for (Contribution contribution : contributions) {
             double yearsInvested = yearsBetween(contribution.date, dateToday);
@@ -47,7 +47,7 @@ public class AERCalculator {
         return derivative;
     }
 
-    private double yearsBetween(DateTime date, DateTime dateToday) {
+    private double yearsBetween(LocalDate date, LocalDate dateToday) {
         return (double) Days.daysBetween(date, dateToday).getDays() / DAYS_IN_YEAR;
     }
 }

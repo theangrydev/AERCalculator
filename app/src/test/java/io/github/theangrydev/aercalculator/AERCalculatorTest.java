@@ -1,6 +1,6 @@
 package io.github.theangrydev.aercalculator;
 
-import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.junit.Test;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class AERCalculatorTest {
 
     @Test(expected = UnknownAERException.class)
     public void allContributionsTodayThrowsUnknownAERException() throws Exception {
-        DateTime dateToday = DateTime.now();
+        LocalDate dateToday = LocalDate.now();
         List<Contribution> contributions = asList(contribution(dateToday, anyValue()), contribution(dateToday, anyValue()));
 
         aerCalculator.computeAER(dateToday, anyValue(), contributions);
@@ -27,10 +27,10 @@ public class AERCalculatorTest {
 
     @Test
     public void noChange() throws Exception {
-        DateTime dateToday = DateTime.now();
+        LocalDate dateToday = LocalDate.now();
         double value = 100;
 
-        DateTime dateYesterday = dateToday.plusDays(-1);
+        LocalDate dateYesterday = dateToday.plusDays(-1);
 
         double aer = aerCalculator.computeAER(dateToday, value, singletonList(contribution(dateYesterday, value)));
 
@@ -39,10 +39,10 @@ public class AERCalculatorTest {
 
     @Test
     public void loseItAllWithinAYear() throws Exception {
-        DateTime dateToday = DateTime.now();
+        LocalDate dateToday = LocalDate.now();
         double valueToday = 50;
 
-        DateTime dateYesterday = dateToday.plusDays(-1);
+        LocalDate dateYesterday = dateToday.plusDays(-1);
         double valueOneYearAgo = 100;
 
         double aer = aerCalculator.computeAER(dateToday, valueToday, singletonList(contribution(dateYesterday, valueOneYearAgo)));
@@ -52,10 +52,10 @@ public class AERCalculatorTest {
 
     @Test
     public void loseHalfEachYear() throws Exception {
-        DateTime dateToday = DateTime.now();
+        LocalDate dateToday = LocalDate.now();
         double valueToday = 50;
 
-        DateTime dateOneYearAgo = dateToday.plusYears(-1);
+        LocalDate dateOneYearAgo = dateToday.plusYears(-1);
         double valueOneYearAgo = 100;
 
         double aer = aerCalculator.computeAER(dateToday, valueToday, singletonList(contribution(dateOneYearAgo, valueOneYearAgo)));
@@ -65,10 +65,10 @@ public class AERCalculatorTest {
 
     @Test
     public void oneContributionAYearAgoGain() throws Exception {
-        DateTime dateToday = DateTime.now();
+        LocalDate dateToday = LocalDate.now();
         double valueToday = 105;
 
-        DateTime dateOneYearAgo = dateToday.plusYears(-1);
+        LocalDate dateOneYearAgo = dateToday.plusYears(-1);
         double valueOneYearAgo = 100;
 
         double aer = aerCalculator.computeAER(dateToday, valueToday, singletonList(contribution(dateOneYearAgo, valueOneYearAgo)));
@@ -78,10 +78,10 @@ public class AERCalculatorTest {
 
     @Test
     public void oneContributionTwoYearsAgo() throws Exception {
-        DateTime dateToday = DateTime.now();
+        LocalDate dateToday = LocalDate.now();
         double valueToday = 102.01;
 
-        DateTime dateOneYearAgo = dateToday.plusYears(-2);
+        LocalDate dateOneYearAgo = dateToday.plusYears(-2);
         double valueOneYearAgo = 100;
 
         double aer = aerCalculator.computeAER(dateToday, valueToday, singletonList(contribution(dateOneYearAgo, valueOneYearAgo)));

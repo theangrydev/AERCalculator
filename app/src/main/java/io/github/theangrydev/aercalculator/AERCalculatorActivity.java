@@ -1,14 +1,11 @@
 package io.github.theangrydev.aercalculator;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.*;
 import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -17,6 +14,8 @@ import java.util.List;
 
 
 public class AERCalculatorActivity extends AppCompatActivity {
+
+    private static final LocalDate NO_MAX_DATE = new LocalDate(9999, 1, 1);
 
     private final AERCalculator aerCalculator = new AERCalculator();
 
@@ -31,11 +30,13 @@ public class AERCalculatorActivity extends AppCompatActivity {
         getLayoutInflater().inflate(R.layout.contribution, contributionsTable());
     }
 
-    public void showDatePicker(View button) {
-        DatePickerFragment datePicker = new DatePickerFragment();
-        datePicker.setButton((Button) button);
-        datePicker.setToday(todayButtonDate());
-        datePicker.show(getSupportFragmentManager(), "datePicker");
+    public void showContributionDatePicker(View button) {
+        LocalDate maxDate = todayButtonDate().minusDays(1);
+        showDatePicker((Button) button, maxDate, maxDate);
+    }
+
+    public void showTodayDatePicker(View button) {
+        showDatePicker((Button) button, todayButtonDate(), NO_MAX_DATE);
     }
 
     public void computeAER(View button) {
@@ -48,6 +49,14 @@ public class AERCalculatorActivity extends AppCompatActivity {
     private void setTodayButton() {
         Button todayButton = (Button) findViewById(R.id.today_button);
         todayButton.setText(dateFormat().print(DateTime.now()));
+    }
+
+    private void showDatePicker(Button button, LocalDate initialDate, LocalDate maxDate) {
+        DatePickerFragment datePicker = new DatePickerFragment();
+        datePicker.setButton(button);
+        datePicker.setInitialDate(initialDate);
+        datePicker.setMaxDate(maxDate);
+        datePicker.show(getSupportFragmentManager(), "datePicker");
     }
 
     private void displayAER(String aer) {
@@ -81,22 +90,22 @@ public class AERCalculatorActivity extends AppCompatActivity {
         }
     }
 
-    private DateTime todayButtonDate() {
+    private LocalDate todayButtonDate() {
         Button inputDate = (Button) findViewById(R.id.today_button);
         return date(inputDate);
     }
 
-    private DateTime date(TableRow contributionRow) {
+    private LocalDate date(TableRow contributionRow) {
         Button inputDate = (Button) contributionRow.findViewById(R.id.input_date);
         return date(inputDate);
     }
 
-    private DateTime date(Button dateButton) {
+    private LocalDate date(Button dateButton) {
         String text = dateButton.getText().toString();
         if (text.equals(getString(R.string.enter))) {
-            return DateTime.now();
+            return LocalDate.now();
         }
-        return dateFormat().parseDateTime(text).withTimeAtStartOfDay();
+        return dateFormat().parseLocalDate(text);
     }
 
     private DateTimeFormatter dateFormat() {
@@ -120,30 +129,4 @@ public class AERCalculatorActivity extends AppCompatActivity {
         return (TableLayout) findViewById(R.id.contributions_table);
     }
 
-    public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
-
-        private Button button;
-        private DateTime today;
-
-        @NonNull
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth());
-            datePickerDialog.getDatePicker().setMaxDate(today.plusDays(-1).getMillis());
-            return datePickerDialog;
-        }
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            button.setText(getString(R.string.date_format_parts, dayOfMonth, month + 1, year));
-        }
-
-        public void setToday(DateTime today) {
-            this.today = today;
-        }
-
-        public void setButton(Button button) {
-            this.button = button;
-        }
-    }
 }
