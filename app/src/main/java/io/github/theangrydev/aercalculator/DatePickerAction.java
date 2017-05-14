@@ -1,9 +1,9 @@
 package io.github.theangrydev.aercalculator;
 
-import android.support.v4.app.FragmentActivity;
+import org.joda.time.LocalDate;
 
 import java.io.Serializable;
 
 public interface DatePickerAction extends Serializable {
-    void onDateSet(FragmentActivity activity, int year, int month, int dayOfMonth);
+    void onDateSet(LocalDate date);
 }
