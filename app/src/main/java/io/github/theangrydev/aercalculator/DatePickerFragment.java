@@ -7,24 +7,48 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
-import android.widget.Button;
 import android.widget.DatePicker;
 import org.joda.time.LocalDate;
 
 public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-    private Button button;
+    private static final String MAX_DATE = "maxDate";
+    private static final String INITIAL_DATE = "initialDate";
+    private static final String ACTION = "action";
+
+    private DatePickerAction action;
     private LocalDate maxDate;
     private LocalDate initialDate;
 
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
+        restoreArguments();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             return honeyCombAndAboveDialog();
         } else {
             return belowHoneyCombDialog();
         }
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        action.onDateSet(getActivity(), year, month, dayOfMonth);
+    }
+
+    public void setArguments(DatePickerAction action, LocalDate initialDate, LocalDate maxDate) {
+        Bundle arguments = new Bundle(3);
+        arguments.putSerializable(ACTION, action);
+        arguments.putSerializable(INITIAL_DATE, initialDate);
+        arguments.putSerializable(MAX_DATE, maxDate);
+        setArguments(arguments);
+    }
+
+    private void restoreArguments() {
+        Bundle arguments = getArguments();
+        action = (DatePickerAction) arguments.getSerializable(ACTION);
+        maxDate = (LocalDate) arguments.getSerializable(MAX_DATE);
+        initialDate = (LocalDate) arguments.getSerializable(INITIAL_DATE);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
@@ -45,26 +69,5 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
                 }
             }
         };
-    }
-
-    @Override
-    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        button.setText(formatDate(year, month, dayOfMonth));
-    }
-
-    public void setInitialDate(LocalDate initialDate) {
-        this.initialDate = initialDate;
-    }
-
-    public void setMaxDate(LocalDate maxDate) {
-        this.maxDate = maxDate;
-    }
-
-    public void setButton(Button button) {
-        this.button = button;
-    }
-
-    private String formatDate(int year, int month, int dayOfMonth) {
-        return getString(R.string.date_format_parts, dayOfMonth, month + 1, year);
     }
 }

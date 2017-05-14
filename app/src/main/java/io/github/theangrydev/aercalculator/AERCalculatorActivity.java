@@ -1,6 +1,8 @@
 package io.github.theangrydev.aercalculator;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.*;
@@ -11,6 +13,8 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static io.github.theangrydev.aercalculator.Contribution.contribution;
 
 
 public class AERCalculatorActivity extends AppCompatActivity {
@@ -27,16 +31,20 @@ public class AERCalculatorActivity extends AppCompatActivity {
     }
 
     public void addContribution(View button) {
-        getLayoutInflater().inflate(R.layout.contribution, contributionsTable());
+        TableLayout contributionsTable = (TableLayout) findViewById(R.id.contributions_table);
+        TableRow contribution = (TableRow) getLayoutInflater().inflate(R.layout.contribution, contributionsTable, false);
+        contribution.setTag(contributionsTable.getChildCount());
+        contributionsTable.addView(contribution);
     }
 
     public void showContributionDatePicker(View button) {
         LocalDate maxDate = todayButtonDate().minusDays(1);
-        showDatePicker((Button) button, maxDate, maxDate);
+        TableRow contribution = (TableRow) button.getParent();
+        showDatePicker(new SetContributionDateAction(contribution.getTag()), maxDate, maxDate);
     }
 
     public void showTodayDatePicker(View button) {
-        showDatePicker((Button) button, todayButtonDate(), NO_MAX_DATE);
+        showDatePicker(new SetTodayDateAction(button.getId()), todayButtonDate(), NO_MAX_DATE);
     }
 
     public void computeAER(View button) {
@@ -46,16 +54,48 @@ public class AERCalculatorActivity extends AppCompatActivity {
         displayAER(aer);
     }
 
+    private static class SetTodayDateAction implements DatePickerAction {
+        private final int todayButtonId;
+
+        public SetTodayDateAction(int todayButtonId) {
+            this.todayButtonId = todayButtonId;
+        }
+
+        @Override
+        public void onDateSet(FragmentActivity activity, int year, int month, int dayOfMonth) {
+            Button dateButton = (Button) activity.findViewById(todayButtonId);
+            dateButton.setText(formatDate(activity.getApplicationContext(), year, month, dayOfMonth));
+        }
+    }
+
+    private static class SetContributionDateAction implements DatePickerAction {
+        private final Object contributionTag;
+
+        private SetContributionDateAction(Object contributionTag) {
+            this.contributionTag = contributionTag;
+        }
+
+        @Override
+        public void onDateSet(FragmentActivity activity, int year, int month, int dayOfMonth) {
+            TableLayout contributionsTable = (TableLayout) activity.findViewById(R.id.contributions_table);
+            TableRow contributionRow = (TableRow) contributionsTable.findViewWithTag(contributionTag);
+            Button dateButton = (Button) contributionRow.findViewById(R.id.input_date);
+            dateButton.setText(formatDate(activity.getApplicationContext(), year, month, dayOfMonth));
+        }
+    }
+
+    private static String formatDate(Context context, int year, int month, int dayOfMonth) {
+        return context.getString(R.string.date_format_parts, dayOfMonth, month + 1, year);
+    }
+
     private void setTodayButton() {
         Button todayButton = (Button) findViewById(R.id.today_button);
         todayButton.setText(dateFormat().print(DateTime.now()));
     }
 
-    private void showDatePicker(Button button, LocalDate initialDate, LocalDate maxDate) {
+    private void showDatePicker(DatePickerAction action, LocalDate initialDate, LocalDate maxDate) {
         DatePickerFragment datePicker = new DatePickerFragment();
-        datePicker.setButton(button);
-        datePicker.setInitialDate(initialDate);
-        datePicker.setMaxDate(maxDate);
+        datePicker.setArguments(action, initialDate, maxDate);
         datePicker.show(getSupportFragmentManager(), "datePicker");
     }
 
@@ -70,13 +110,13 @@ public class AERCalculatorActivity extends AppCompatActivity {
     }
 
     private List<Contribution> extractContributions() {
-        TableLayout contributionsTable = contributionsTable();
+        TableLayout contributionsTable = (TableLayout) findViewById(R.id.contributions_table);
         int contributionCount = contributionsTable.getChildCount();
 
         List<Contribution> contributions = new ArrayList<>();
         for (int contributionIndex = 0; contributionIndex < contributionCount; contributionIndex++) {
-            TableRow contribution = (TableRow) contributionsTable.getChildAt(contributionIndex);
-            contributions.add(Contribution.contribution(date(contribution), amount(contribution)));
+            TableRow contributionRow = (TableRow) contributionsTable.getChildAt(contributionIndex);
+            contributions.add(contribution(date(contributionRow), amount(contributionRow)));
         }
         return contributions;
     }
@@ -124,9 +164,4 @@ public class AERCalculatorActivity extends AppCompatActivity {
             return 0;
         }
     }
-
-    private TableLayout contributionsTable() {
-        return (TableLayout) findViewById(R.id.contributions_table);
-    }
-
 }
