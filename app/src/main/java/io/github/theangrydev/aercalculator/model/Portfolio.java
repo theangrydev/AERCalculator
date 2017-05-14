@@ -60,16 +60,6 @@ public class Portfolio {
         contributions.add(emptyContribution());
     }
 
-    private List<Contribution> filledInContributions() {
-        List<Contribution> filledIn = new ArrayList<>();
-        for (Contribution contribution : contributions) {
-            if (contribution.hasAmount() && contribution.hasDate()) {
-                filledIn.add(contribution);
-            }
-        }
-        return filledIn;
-    }
-
     public void setContributionAmount(int index, Double amount) {
         Contribution contribution = contributions.get(index);
         contributions.set(index, contribution.withAmount(amount));
@@ -78,5 +68,15 @@ public class Portfolio {
     public void setContributionDate(int index, LocalDate date) {
         Contribution contribution = contributions.get(index);
         contributions.set(index, contribution.withDate(date));
+    }
+
+    private List<Contribution> filledInContributions() {
+        List<Contribution> filledIn = new ArrayList<>();
+        for (Contribution contribution : contributions) {
+            if (contribution.hasAmount() && contribution.hasDate()) {
+                filledIn.add(contribution);
+            }
+        }
+        return filledIn;
     }
 }

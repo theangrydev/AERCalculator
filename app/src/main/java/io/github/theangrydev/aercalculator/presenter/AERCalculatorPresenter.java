@@ -35,7 +35,7 @@ public class AERCalculatorPresenter {
             return;
         }
         portfolio.removeIncompleteContributions();
-        view.displayContributions(portfolio.contributions());
+        displayContributions();
         try {
             double aer = aerCalculator.computeAER(portfolio.dateToday(), portfolio.valueToday(), portfolio.contributions());
             view.displayAER(aer);
@@ -46,7 +46,7 @@ public class AERCalculatorPresenter {
 
     public void addContribution() {
         portfolio.addEmptyContribution();
-        view.displayContributions(portfolio.contributions());
+        displayContributions();
         view.scrollToBottomOfContributions();
     }
 
@@ -66,7 +66,7 @@ public class AERCalculatorPresenter {
             @Override
             public void onDateSet(LocalDate date) {
                 setContributionDate(contributionIndex, date);
-                view.displayContributions(portfolio.contributions());
+                displayContributions();
             }
         }, maxDate, maxDate);
     }
@@ -81,6 +81,10 @@ public class AERCalculatorPresenter {
 
     private void setContributionDate(int index, LocalDate date) {
         portfolio.setContributionDate(index, date);
+    }
+
+    private void displayContributions() {
+        view.displayContributions(portfolio.contributions());
     }
 
     private void showTodayDate() {
