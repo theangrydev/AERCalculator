@@ -25,11 +25,7 @@ public class AERCalculatorPresenter {
     }
 
     public void computeAER() {
-        if (portfolio.hasUnknownValueToday()) {
-            view.displayUnknownAER();
-            return;
-        }
-        if (portfolio.allContributionsAreIncomplete()) {
+        if (portfolio.hasUnknownValueToday() || portfolio.allContributionsAreIncomplete()) {
             view.displayUnknownAER();
             return;
         }
