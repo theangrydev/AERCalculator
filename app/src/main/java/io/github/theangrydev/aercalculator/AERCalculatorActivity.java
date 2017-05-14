@@ -9,7 +9,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
-import io.github.theangrydev.aercalculator.R;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -18,7 +17,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.lang.String.format;
 
 public class AERCalculatorActivity extends AppCompatActivity {
 
@@ -80,7 +78,7 @@ public class AERCalculatorActivity extends AppCompatActivity {
     private String computeAER(List<Contribution> contributions, double valueToday) {
         try {
             double aer = aerCalculator.computeAER(todayButtonDate(), valueToday, contributions);
-            return format(getString(R.string.aer), aer);
+            return getString(R.string.aer, aer);
         } catch (UnknownAERException unknownAERException) {
             return getString(R.string.unknown_aer);
         }
@@ -144,7 +142,7 @@ public class AERCalculatorActivity extends AppCompatActivity {
 
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-            button.setText(format(getString(R.string.date_format_parts), dayOfMonth, month + 1, year));
+            button.setText(getString(R.string.date_format_parts, dayOfMonth, month + 1, year));
         }
 
         public void setToday(DateTime today) {

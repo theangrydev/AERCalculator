@@ -9,7 +9,7 @@
     <string name="value">Value:</string>
     <string name="today">Today:</string>
     <string name="unknown_aer">AER: Unknown</string>
-    <string name="aer" formatted="false">AER: %.2f%%</string>
+    <string name="aer">AER: %1$.2f%%</string>
     <string name="date_format">dd/MM/yyyy</string>
-    <string name="date_format_parts" formatted="false">%02d/%02d/%d</string>
+    <string name="date_format_parts">%1$02d/%2$02d/%3$d</string>
 </resources>
