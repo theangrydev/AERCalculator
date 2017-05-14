@@ -2,8 +2,9 @@ package io.github.theangrydev.aercalculator;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.*;
@@ -34,7 +35,7 @@ public class AERCalculatorActivity extends AppCompatActivity {
         DatePickerFragment datePicker = new DatePickerFragment();
         datePicker.setButton((Button) button);
         datePicker.setToday(todayButtonDate());
-        datePicker.show(getFragmentManager(), "datePicker");
+        datePicker.show(getSupportFragmentManager(), "datePicker");
     }
 
     public void computeAER(View button) {
@@ -124,6 +125,7 @@ public class AERCalculatorActivity extends AppCompatActivity {
         private Button button;
         private DateTime today;
 
+        @NonNull
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, today.getYear(), today.getMonthOfYear(), today.getDayOfMonth());
