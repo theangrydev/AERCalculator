@@ -26,7 +26,8 @@
         android:id="@+id/contributions_table"
         android:stretchColumns="*"
         android:layout_below="@+id/contributions_header_text"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true">
 
         <include layout="@layout/contribution"/>
     </TableLayout>
@@ -44,7 +45,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_alignParentLeft="true">
 
         <LinearLayout
             android:id="@+id/value_today"
@@ -72,6 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.5"
                 android:layout_marginStart="10dp"
+                android:layout_marginLeft="10dp"
                 android:text="@string/value"/>
 
             <EditText
@@ -90,6 +93,7 @@
             android:text="@string/unknown_aer"
             android:layout_below="@+id/value_today"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:gravity="center_horizontal"/>
 
         <Button
@@ -100,6 +104,7 @@
             android:onClick="computeAER"
             android:layout_below="@+id/aer_result"
             android:layout_alignParentStart="true"
+            android:layout_alignParentLeft="true"
             android:elevation="0dp"/>
     </RelativeLayout>
 
