@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.*;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -27,7 +26,6 @@ public class AERCalculatorActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aer_calculator);
-        setTodayButton();
     }
 
     public void addContribution(View button) {
@@ -86,11 +84,6 @@ public class AERCalculatorActivity extends AppCompatActivity {
 
     private static String formatDate(Context context, int year, int month, int dayOfMonth) {
         return context.getString(R.string.date_format_parts, dayOfMonth, month + 1, year);
-    }
-
-    private void setTodayButton() {
-        Button todayButton = (Button) findViewById(R.id.today_button);
-        todayButton.setText(dateFormat().print(DateTime.now()));
     }
 
     private void showDatePicker(DatePickerAction action, LocalDate initialDate, LocalDate maxDate) {

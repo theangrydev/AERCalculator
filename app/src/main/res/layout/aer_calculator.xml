@@ -60,7 +60,7 @@
                 android:id="@+id/label_today"
                 android:layout_weight="0.5"/>
 
-            <Button
+            <io.github.theangrydev.aercalculator.TodayButton
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/today_button"
