@@ -4,6 +4,7 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
 import android.widget.DatePicker;
+import io.github.theangrydev.aercalculator.view.AERCalculatorActivity;
 import org.hamcrest.Matcher;
 import org.junit.Rule;
 import org.junit.Test;

@@ -1,7 +1,7 @@
 package io.github.theangrydev.aercalculator.presenter;
 
-import io.github.theangrydev.aercalculator.Contribution;
-import io.github.theangrydev.aercalculator.DatePickerAction;
+import io.github.theangrydev.aercalculator.model.Contribution;
+import io.github.theangrydev.aercalculator.view.DatePickerAction;
 import org.joda.time.LocalDate;
 
 import java.util.List;

@@ -1,12 +1,15 @@
 package io.github.theangrydev.aercalculator;
 
+import io.github.theangrydev.aercalculator.model.AERCalculator;
+import io.github.theangrydev.aercalculator.model.Contribution;
+import io.github.theangrydev.aercalculator.model.UnknownAERException;
 import org.joda.time.LocalDate;
 import org.junit.Test;
 
 import java.util.List;
 import java.util.Random;
 
-import static io.github.theangrydev.aercalculator.Contribution.contribution;
+import static io.github.theangrydev.aercalculator.model.Contribution.contribution;
 import static java.util.Arrays.asList;
 import static java.util.Collections.singletonList;
 import static org.junit.Assert.assertEquals;

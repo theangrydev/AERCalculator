@@ -1,4 +1,4 @@
-package io.github.theangrydev.aercalculator;
+package io.github.theangrydev.aercalculator.view;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
+import io.github.theangrydev.aercalculator.R;
+import io.github.theangrydev.aercalculator.model.Contribution;
 import io.github.theangrydev.aercalculator.presenter.AERCalculatorPresenter;
 import io.github.theangrydev.aercalculator.presenter.AERCalculatorView;
 import io.github.theangrydev.aercalculator.presenter.ContributionAdapter;
@@ -98,7 +100,7 @@ public class AERCalculatorActivity extends AppCompatActivity implements AERCalcu
 
             @Override
             public void afterTextChanged(Editable editable) {
-                presenter.setTodayValue(editable.toString());
+                presenter.setValueToday(editable.toString());
             }
         });
     }

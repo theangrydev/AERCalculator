@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import io.github.theangrydev.aercalculator.Contribution;
 import io.github.theangrydev.aercalculator.R;
+import io.github.theangrydev.aercalculator.model.Contribution;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 

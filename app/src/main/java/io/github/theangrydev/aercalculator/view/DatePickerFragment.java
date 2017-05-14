@@ -1,4 +1,4 @@
-package io.github.theangrydev.aercalculator;
+package io.github.theangrydev.aercalculator.view;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
