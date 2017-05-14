@@ -18,8 +18,6 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.util.List;
 
-7
-
 public class AERCalculatorActivity extends AppCompatActivity implements AERCalculatorView {
 
     private final AERCalculatorPresenter presenter = new AERCalculatorPresenter(this);
