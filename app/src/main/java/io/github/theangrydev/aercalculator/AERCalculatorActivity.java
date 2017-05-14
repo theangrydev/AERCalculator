@@ -3,10 +3,8 @@ package io.github.theangrydev.aercalculator;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 import org.joda.time.DateTime;
@@ -30,8 +28,7 @@ public class AERCalculatorActivity extends AppCompatActivity {
     }
 
     public void addContribution(View button) {
-        TableLayout tableLayout = contributionsTable();
-        tableLayout.addView(makeContribution(button.getContext()));
+        getLayoutInflater().inflate(R.layout.contribution, contributionsTable());
     }
 
     public void showDatePicker(View button) {
@@ -121,11 +118,6 @@ public class AERCalculatorActivity extends AppCompatActivity {
 
     private TableLayout contributionsTable() {
         return (TableLayout) findViewById(R.id.contributions_table);
-    }
-
-    private TableRow makeContribution(Context context) {
-        LayoutInflater layoutInflater = LayoutInflater.from(context);
-        return (TableRow) layoutInflater.inflate(R.layout.contribution, null);
     }
 
     public static class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
