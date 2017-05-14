@@ -25,6 +25,5 @@
         android:text="@string/add_more"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/add_more_button"
-        android:onClick="addContribution"/>
+        android:id="@+id/add_more_button"/>
 </LinearLayout>

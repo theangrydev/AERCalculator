@@ -2,8 +2,6 @@ package io.github.theangrydev.aercalculator.view;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -27,19 +25,10 @@ public class AERCalculatorActivity extends AppCompatActivity implements AERCalcu
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aer_calculator);
         presenter.initialise();
-        listenToTodayValue();
-    }
-
-    public void addContribution(View addContributionButton) {
-        presenter.addContribution();
-    }
-
-    public void showTodayDatePicker(View button) {
-        presenter.showTodayDatePicker();
-    }
-
-    public void computeAER(View button) {
-        presenter.computeAER();
+        listenToTodayValueChanges();
+        listenToTodayDateButtonClicks();
+        listenToAddContributionButtonClicks();
+        listenToComputeAERButtonClicks();
     }
 
     @Override
@@ -84,22 +73,43 @@ public class AERCalculatorActivity extends AppCompatActivity implements AERCalcu
         return DateTimeFormat.forPattern(getString(R.string.date_format));
     }
 
-    private void listenToTodayValue() {
+    private void listenToTodayDateButtonClicks() {
+        Button button = (Button) findViewById(R.id.today_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View button) {
+                presenter.showTodayDatePicker();
+            }
+        });
+    }
+
+    private void listenToAddContributionButtonClicks() {
+        Button button = (Button) findViewById(R.id.add_more_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View button) {
+                presenter.addContribution();
+            }
+        });
+    }
+
+    private void listenToComputeAERButtonClicks() {
+        Button button = (Button) findViewById(R.id.compute_aer);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View button) {
+                presenter.computeAER();
+            }
+        });
+    }
+
+    private void listenToTodayValueChanges() {
         final TextView valueToday = (TextView) findViewById(R.id.input_value_today);
-        valueToday.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+        valueToday.addTextChangedListener(new TextChangedWatcher() {
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                presenter.setValueToday(editable.toString());
+            protected void textChanged(String text) {
+                presenter.setValueToday(text);
             }
         });
     }

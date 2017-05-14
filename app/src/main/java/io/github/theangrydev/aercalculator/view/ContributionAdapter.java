@@ -1,8 +1,6 @@
 package io.github.theangrydev.aercalculator.view;
 
 import android.content.Context;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,41 +37,25 @@ public class ContributionAdapter extends ArrayAdapter<Contribution> {
     }
 
     private void updateAmount(final int position, View convertView, Contribution contribution) {
-        final TextView amount = (TextView) convertView.findViewById(R.id.input_amount);
+        TextView amount = (TextView) convertView.findViewById(R.id.input_amount);
         amount.setText(contributionAmount(contribution));
-        amount.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
-                    amount.setText("");
-                }
-            }
-        });
-        amount.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                presenter.setContributionAmount(position, editable.toString());
-            }
-        });
+        clearOnFocus(amount);
+        listenToAmountChanges(position, amount);
     }
 
     private void updateDate(final int position, View convertView, Contribution contribution) {
         Button date = (Button) convertView.findViewById(R.id.input_date);
         date.setText(contributionDate(contribution));
-        date.setOnClickListener(new View.OnClickListener() {
+        listenToContributionDateButtonClicks(position, date);
+    }
+
+    private void clearOnFocus(final TextView textView) {
+        textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
-            public void onClick(View view) {
-                presenter.showContributionDatePicker(position);
+            public void onFocusChange(View view, boolean hasFocus) {
+                if (hasFocus) {
+                    textView.setText("");
+                }
             }
         });
     }
@@ -104,5 +86,24 @@ public class ContributionAdapter extends ArrayAdapter<Contribution> {
 
     private String getString(int id) {
         return getContext().getString(id);
+    }
+
+    private void listenToContributionDateButtonClicks(final int position, Button date) {
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                presenter.showContributionDatePicker(position);
+            }
+        });
+    }
+
+    private void listenToAmountChanges(final int position, TextView amount) {
+        amount.addTextChangedListener(new TextChangedWatcher() {
+
+            @Override
+            protected void textChanged(String text) {
+                presenter.setContributionAmount(position, text);
+            }
+        });
     }
 }

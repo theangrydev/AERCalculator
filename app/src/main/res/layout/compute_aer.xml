@@ -16,6 +16,5 @@
         android:text="@string/compute_aer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="computeAER"
         android:elevation="0dp"/>
 </LinearLayout>

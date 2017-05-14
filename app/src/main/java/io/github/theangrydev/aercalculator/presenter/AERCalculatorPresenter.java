@@ -79,12 +79,12 @@ public class AERCalculatorPresenter {
         portfolio.setValueToday(parseDouble(value));
     }
 
-    private void setContributionDate(int index, LocalDate date) {
-        portfolio.setContributionDate(index, date);
-    }
-
     private void displayContributions() {
         view.displayContributions(portfolio.contributions());
+    }
+
+    private void setContributionDate(int index, LocalDate date) {
+        portfolio.setContributionDate(index, date);
     }
 
     private void showTodayDate() {
