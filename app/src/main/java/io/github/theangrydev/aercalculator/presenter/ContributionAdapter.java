@@ -14,6 +14,7 @@ import io.github.theangrydev.aercalculator.R;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ContributionAdapter extends ArrayAdapter<Contribution> {
@@ -77,19 +78,23 @@ public class ContributionAdapter extends ArrayAdapter<Contribution> {
     }
 
     private String contributionAmount(Contribution contribution) {
-        if (contribution.isEmpty()) {
-            return "";
+        if (contribution.hasAmount()) {
+            return decimalFormat().format(contribution.amount);
         } else {
-            return String.valueOf(contribution.amount);
+            return "";
         }
     }
 
     private String contributionDate(Contribution contribution) {
-        if (contribution.isEmpty()) {
-            return getString(R.string.enter);
-        } else {
+        if (contribution.hasDate()) {
             return dateFormat().print(contribution.date);
+        } else {
+            return getString(R.string.enter);
         }
+    }
+
+    private DecimalFormat decimalFormat() {
+        return new DecimalFormat(getString(R.string.decimal_format));
     }
 
     private DateTimeFormatter dateFormat() {

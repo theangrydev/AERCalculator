@@ -5,9 +5,9 @@ import org.joda.time.LocalDate;
 public class Contribution {
 
     public final LocalDate date;
-    public final double amount;
+    public final Double amount;
 
-    Contribution(LocalDate date, double amount) {
+    private Contribution(LocalDate date, Double amount) {
         this.date = date;
         this.amount = amount;
     }
@@ -16,31 +16,24 @@ public class Contribution {
         return new Contribution(date, amount);
     }
 
-    public static EmptyContribution emptyContribution() {
-        return new EmptyContribution();
+    public static Contribution emptyContribution() {
+        return new Contribution(null, null);
     }
 
     public Contribution withDate(LocalDate date) {
-        return contribution(date, amount);
+        return new Contribution(date, amount);
     }
 
-    public Contribution withAmount(double amount) {
-        return contribution(date, amount);
+    public Contribution withAmount(Double amount) {
+        return new Contribution(date, amount);
     }
 
-    public boolean isEmpty() {
-        return false;
-    }
-}
-
-class EmptyContribution extends Contribution {
-
-    EmptyContribution() {
-        super(LocalDate.now(), 0);
+    public boolean hasDate() {
+        return date != null;
     }
 
-    @Override
-    public boolean isEmpty() {
-        return true;
+    public boolean hasAmount() {
+        return amount != null;
     }
 }
+

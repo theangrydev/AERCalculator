@@ -18,7 +18,7 @@ public class AERCalculatorPresenter {
     private final AERCalculatorView view;
 
     private LocalDate dateToday = LocalDate.now();
-    private double valueToday;
+    private Double valueToday;
     private List<Contribution> contributions = new ArrayList<>();
 
     public AERCalculatorPresenter(AERCalculatorView view) {
@@ -31,8 +31,19 @@ public class AERCalculatorPresenter {
     }
 
     public void computeAER() {
+        if (valueToday == null) {
+            view.displayUnknownAER();
+            return;
+        }
+        List<Contribution> filledInContributions = filledInContributions();
+        if (filledInContributions.isEmpty()) {
+            view.displayUnknownAER();
+            return;
+        }
+        contributions = filledInContributions;
+        view.displayContributions(this.contributions);
         try {
-            double aer = aerCalculator.computeAER(dateToday, valueToday, contributions);
+            double aer = aerCalculator.computeAER(dateToday, valueToday, this.contributions);
             view.displayAER(aer);
         } catch (UnknownAERException e) {
             view.displayUnknownAER();
@@ -42,6 +53,7 @@ public class AERCalculatorPresenter {
     public void addContribution() {
         contributions.add(emptyContribution());
         view.displayContributions(contributions);
+        view.scrollToBottomOfContributions();
     }
 
     public void showTodayDatePicker() {
@@ -66,26 +78,42 @@ public class AERCalculatorPresenter {
     }
 
     public void setContributionAmount(int index, String amount) {
-        contributions.set(index, contributions.get(index).withAmount(parseDouble(amount)));
+        Contribution contribution = contributions.get(index);
+        contributions.set(index, contribution.withAmount(parseDouble(amount)));
     }
 
     public void setTodayValue(String value) {
-        valueToday = parseDouble(value);
+        if (value.isEmpty()) {
+            valueToday = null;
+        } else {
+            valueToday = parseDouble(value);
+        }
     }
 
     private void setContributionDate(int index, LocalDate date) {
-        contributions.set(index, contributions.get(index).withDate(date));
+        Contribution contribution = contributions.get(index);
+        contributions.set(index, contribution.withDate(date));
     }
 
     private void showTodayDate() {
         view.displayTodayDate(dateToday);
     }
 
-    private double parseDouble(String amount) {
-        try {
+    private Double parseDouble(String amount) {
+        if (amount.isEmpty()) {
+            return null;
+        } else {
             return Double.parseDouble(amount);
-        } catch (NumberFormatException e) {
-            return 0;
         }
+    }
+
+    private List<Contribution> filledInContributions() {
+        List<Contribution> filledIn = new ArrayList<>();
+        for (Contribution contribution : contributions) {
+            if (contribution.hasAmount() && contribution.hasDate()) {
+                filledIn.add(contribution);
+            }
+        }
+        return filledIn;
     }
 }

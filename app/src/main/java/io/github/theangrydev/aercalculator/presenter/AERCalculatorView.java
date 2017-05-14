@@ -12,4 +12,5 @@ public interface AERCalculatorView {
     void displayUnknownAER();
     void displayDatePicker(DatePickerAction action, LocalDate initialDate, LocalDate maxDate);
     void displayTodayDate(LocalDate todayDate);
+    void scrollToBottomOfContributions();
 }
