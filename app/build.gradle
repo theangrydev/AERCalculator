@@ -7,7 +7,7 @@ android {
         applicationId "io.github.theangrydev.aercalculator"
         minSdkVersion 9
         targetSdkVersion 25
-        versionCode 4
+        versionCode 5
         versionName "0.1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
