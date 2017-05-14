@@ -8,7 +8,7 @@ import java.util.List;
 public class AERCalculator {
 
     private static final int MAX_ITERATIONS = 50;
-    private static final double MAX_EPSILON = 0.0000000001;
+    private static final double MAX_RATE_CHANGE = 0.0000000001;
     private static final double INITIAL_GUESS = 0.1;
     private static final int DAYS_IN_YEAR = 365;
 
@@ -19,10 +19,10 @@ public class AERCalculator {
             double resultAtRateDerivative = resultAtRateDerivative(contributions, rate, dateToday);
 
             double newRate = Math.max(-1.0, rate - resultAtRate / resultAtRateDerivative);
-            double epsilonRate = Math.abs(newRate - rate);
+            double rateChange = Math.abs(newRate - rate);
             rate = newRate;
 
-            if (epsilonRate <= MAX_EPSILON) {
+            if (rateChange <= MAX_RATE_CHANGE) {
                 return rate * 100;
             }
         }
