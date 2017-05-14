@@ -12,11 +12,4 @@
         android:gravity="center_horizontal"/>
 
     <include layout="@layout/value_today"/>
-
-    <Button
-        android:id="@+id/compute_aer"
-        android:text="@string/compute_aer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:elevation="0dp"/>
 </LinearLayout>
