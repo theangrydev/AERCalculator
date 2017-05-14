@@ -14,6 +14,5 @@
     android:orientation="vertical">
 
     <include layout="@layout/contributions_table"/>
-    <include layout="@layout/value_today"/>
     <include layout="@layout/compute_aer"/>
 </LinearLayout>

@@ -39,6 +39,10 @@ public class Portfolio implements Serializable {
         return filledInContributions().isEmpty();
     }
 
+    public boolean allContributionsAreFilledIn() {
+        return filledInContributions().size() == contributions.size();
+    }
+
     public LocalDate dateToday() {
         return dateToday;
     }
