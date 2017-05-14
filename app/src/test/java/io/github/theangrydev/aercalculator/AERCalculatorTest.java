@@ -4,6 +4,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 import static io.github.theangrydev.aercalculator.Contribution.contribution;
 import static java.util.Arrays.asList;
@@ -89,6 +90,6 @@ public class AERCalculatorTest {
     }
 
     private double anyValue() {
-        return 1;
+        return ThreadLocalRandom.current().nextDouble();
     }
 }

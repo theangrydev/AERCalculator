@@ -11,7 +11,6 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class AERCalculatorActivity extends AppCompatActivity {
         datePicker.show(getFragmentManager(), "datePicker");
     }
 
-    public void computeAER(View button) throws ParseException {
+    public void computeAER(View button) {
         List<Contribution> contributions = extractContributions();
         double valueToday = extractValueToday();
         String aer = computeAER(contributions, valueToday);
