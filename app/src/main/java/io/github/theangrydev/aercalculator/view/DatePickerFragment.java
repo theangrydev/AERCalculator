@@ -63,7 +63,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
 
             @Override
             public void onDateChanged(DatePicker view, int year, int month, int dayOfMonth) {
-                LocalDate dateTime = new LocalDate(year, month, dayOfMonth);
+                LocalDate dateTime = new LocalDate(year, month + 1, dayOfMonth);
                 if (dateTime.isAfter(maxDate)) {
                     view.updateDate(maxDate.getYear(), maxDate.getMonthOfYear() - 1, maxDate.getDayOfMonth());
                 }
