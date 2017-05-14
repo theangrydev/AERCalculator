@@ -6,23 +6,22 @@ import io.github.theangrydev.aercalculator.model.UnknownAERException;
 import io.github.theangrydev.aercalculator.view.DatePickerAction;
 import org.joda.time.LocalDate;
 
-import static io.github.theangrydev.aercalculator.model.Portfolio.emptyPortfolio;
-
 public class AERCalculatorPresenter {
     private static final LocalDate NO_MAX_DATE = new LocalDate(9999, 1, 1);
 
     private final AERCalculator aerCalculator = new AERCalculator();
     private final AERCalculatorView view;
 
-    private Portfolio portfolio = emptyPortfolio();
+    private final Portfolio portfolio;
 
-    public AERCalculatorPresenter(AERCalculatorView view) {
+    public AERCalculatorPresenter(AERCalculatorView view, Portfolio portfolio) {
         this.view = view;
+        this.portfolio = portfolio;
     }
 
     public void initialise() {
-        showTodayDate();
-        addContribution();
+        setDateToday(LocalDate.now());
+        displayContributions();
     }
 
     public void computeAER() {
@@ -53,20 +52,23 @@ public class AERCalculatorPresenter {
     public void showTodayDatePicker() {
         view.displayDatePicker(new DatePickerAction() {
             @Override
-            public void onDateSet(LocalDate date) {
-                portfolio.setDateToday(date);
-                showTodayDate();
+            public void onDateSet(AERCalculatorPresenter presenter, LocalDate date) {
+                presenter.setDateToday(date);
             }
         }, portfolio.dateToday(), NO_MAX_DATE);
+    }
+
+    private void setDateToday(LocalDate date) {
+        portfolio.setDateToday(date);
+        view.displayTodayDate(portfolio.dateToday());
     }
 
     public void showContributionDatePicker(final int contributionIndex) {
         LocalDate maxDate = portfolio.dateToday().minusDays(1);
         view.displayDatePicker(new DatePickerAction() {
             @Override
-            public void onDateSet(LocalDate date) {
-                setContributionDate(contributionIndex, date);
-                displayContributions();
+            public void onDateSet(AERCalculatorPresenter presenter, LocalDate date) {
+                presenter.setContributionDate(contributionIndex, date);
             }
         }, maxDate, maxDate);
     }
@@ -85,10 +87,7 @@ public class AERCalculatorPresenter {
 
     private void setContributionDate(int index, LocalDate date) {
         portfolio.setContributionDate(index, date);
-    }
-
-    private void showTodayDate() {
-        view.displayTodayDate(portfolio.dateToday());
+        displayContributions();
     }
 
     private Double parseDouble(String amount) {

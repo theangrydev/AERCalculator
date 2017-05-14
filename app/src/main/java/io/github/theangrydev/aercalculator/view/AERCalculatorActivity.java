@@ -8,6 +8,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import io.github.theangrydev.aercalculator.R;
 import io.github.theangrydev.aercalculator.model.Contribution;
+import io.github.theangrydev.aercalculator.model.Portfolio;
 import io.github.theangrydev.aercalculator.presenter.AERCalculatorPresenter;
 import io.github.theangrydev.aercalculator.presenter.AERCalculatorView;
 import org.joda.time.LocalDate;
@@ -16,19 +17,36 @@ import org.joda.time.format.DateTimeFormatter;
 
 import java.util.List;
 
+import static io.github.theangrydev.aercalculator.model.Portfolio.emptyPortfolio;
+
 public class AERCalculatorActivity extends AppCompatActivity implements AERCalculatorView {
 
-    private final AERCalculatorPresenter presenter = new AERCalculatorPresenter(this);
+    private static final String PORTFOLIO_KEY = "portfolio";
+
+    private AERCalculatorPresenter presenter;
+    private Portfolio portfolio;
+
+    public AERCalculatorPresenter presenter() {
+        return presenter;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.aer_calculator);
+        portfolio = loadPortfolio(savedInstanceState);
+        presenter = new AERCalculatorPresenter(this, portfolio);
         presenter.initialise();
         listenToTodayValueChanges();
         listenToTodayDateButtonClicks();
         listenToAddContributionButtonClicks();
         listenToComputeAERButtonClicks();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        outState.putSerializable(PORTFOLIO_KEY, portfolio);
+        super.onSaveInstanceState(outState);
     }
 
     @Override
@@ -67,6 +85,18 @@ public class AERCalculatorActivity extends AppCompatActivity implements AERCalcu
     public void scrollToBottomOfContributions() {
         ListView contributionsTable = (ListView) findViewById(R.id.contributions_table);
         contributionsTable.setSelection(contributionsTable.getCount() - 1);
+    }
+
+    private Portfolio loadPortfolio(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            return emptyPortfolio();
+        }
+        Portfolio portfolio = (Portfolio) savedInstanceState.getSerializable(PORTFOLIO_KEY);
+        if (portfolio == null) {
+            return emptyPortfolio();
+        } else {
+            return portfolio;
+        }
     }
 
     private DateTimeFormatter dateFormat() {

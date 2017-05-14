@@ -2,13 +2,14 @@ package io.github.theangrydev.aercalculator.model;
 
 import org.joda.time.LocalDate;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import static io.github.theangrydev.aercalculator.model.Contribution.emptyContribution;
 import static java.util.Collections.unmodifiableList;
 
-public class Portfolio {
+public class Portfolio implements Serializable {
 
     private LocalDate dateToday;
     private Double valueToday;
@@ -21,7 +22,9 @@ public class Portfolio {
     }
 
     public static Portfolio emptyPortfolio() {
-        return new Portfolio(LocalDate.now(), null, new ArrayList<Contribution>());
+        ArrayList<Contribution> contributions = new ArrayList<>();
+        contributions.add(emptyContribution());
+        return new Portfolio(null, null, contributions);
     }
 
     public boolean hasUnknownValueToday() {

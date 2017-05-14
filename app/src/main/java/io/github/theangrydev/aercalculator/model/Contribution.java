@@ -2,7 +2,9 @@ package io.github.theangrydev.aercalculator.model;
 
 import org.joda.time.LocalDate;
 
-public class Contribution {
+import java.io.Serializable;
+
+public class Contribution implements Serializable {
 
     public final LocalDate date;
     public final Double amount;
