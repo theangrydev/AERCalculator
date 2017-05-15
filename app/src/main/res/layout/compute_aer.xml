@@ -11,8 +11,6 @@
         android:text="@string/unknown_aer"
         android:gravity="center_horizontal"/>
 
-    <include layout="@layout/value_today"/>
-
     <Button
         android:id="@+id/compute_aer"
         android:text="@string/compute_aer"

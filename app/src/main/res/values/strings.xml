@@ -5,6 +5,7 @@
     <string name="date">Date:</string>
     <string name="amount">Amount:</string>
     <string name="enter">Enter</string>
+    <string name="add_more">Add More</string>
     <string name="value">Value:</string>
     <string name="today">Today:</string>
     <string name="unknown_aer">AER: Unknown</string>
