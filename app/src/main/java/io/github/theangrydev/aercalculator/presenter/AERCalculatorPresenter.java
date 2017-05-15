@@ -71,6 +71,7 @@ public class AERCalculatorPresenter {
 
     public void setContributionAmount(int index, String amount) {
         portfolio.setContributionAmount(index, parseDouble(amount));
+        //displayContributions(); // TODO: #5 this doesn't work
     }
 
     public void setValueToday(String value) {
