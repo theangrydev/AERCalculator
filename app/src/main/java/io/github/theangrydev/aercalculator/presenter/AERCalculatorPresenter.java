@@ -24,6 +24,22 @@ public class AERCalculatorPresenter {
         displayContributions();
     }
 
+    public void computeAER() {
+        if (portfolio.hasUnknownValueToday() || portfolio.allContributionsAreIncomplete()) {
+            view.displayUnknownAER();
+            return;
+        }
+        portfolio.removeIncompleteContributions();
+        try {
+            double aer = aerCalculator.computeAER(portfolio.dateToday(), portfolio.valueToday(), portfolio.contributions());
+            view.displayAER(aer);
+        } catch (UnknownAERException e) {
+            view.displayUnknownAER();
+        }
+        addContribution();
+        displayContributions();
+    }
+
     public void showTodayDatePicker() {
         view.displayDatePicker(new DatePickerAction() {
             @Override
@@ -49,19 +65,17 @@ public class AERCalculatorPresenter {
             return;
         }
         if (portfolio.allContributionsAreFilledIn()) {
-            portfolio.addEmptyContribution();
+            addContribution();
         }
         displayContributions();
-        view.scrollToBottomOfContributions();
     }
 
     private void setContributionDate(int index, LocalDate date) {
         portfolio.setContributionDate(index, date);
         if (portfolio.allContributionsAreFilledIn()) {
-            portfolio.addEmptyContribution();
+            addContribution();
         }
         displayContributions();
-        view.scrollToBottomOfContributions();
     }
 
     private void setDateToday(LocalDate date) {
@@ -69,25 +83,14 @@ public class AERCalculatorPresenter {
         view.displayTodayDate(portfolio.dateToday());
     }
 
-    public void setValueToday(String value) {
-        portfolio.setValueToday(parseDouble(value));
-        computeAER();
-    }
-
-    private void computeAER() {
-        if (portfolio.hasUnknownValueToday() || portfolio.allContributionsAreIncomplete()) {
-            view.displayUnknownAER();
-            return;
-        }
-        portfolio.removeIncompleteContributions();
-        try {
-            double aer = aerCalculator.computeAER(portfolio.dateToday(), portfolio.valueToday(), portfolio.contributions());
-            view.displayAER(aer);
-        } catch (UnknownAERException e) {
-            view.displayUnknownAER();
-        }
+    private void addContribution() {
         portfolio.addEmptyContribution();
         displayContributions();
+        view.scrollToBottomOfContributions();
+    }
+
+    public void setValueToday(String value) {
+        portfolio.setValueToday(parseDouble(value));
     }
 
     private void displayContributions() {

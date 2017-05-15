@@ -39,6 +39,7 @@ public class AERCalculatorActivity extends AppCompatActivity implements AERCalcu
         presenter.initialise();
         listenToTodayValueChanges();
         listenToTodayDateButtonClicks();
+        listenToComputeAERButtonClicks();
     }
 
     @Override
@@ -107,6 +108,16 @@ public class AERCalculatorActivity extends AppCompatActivity implements AERCalcu
             @Override
             public void onClick(View button) {
                 presenter.showTodayDatePicker();
+            }
+        });
+    }
+
+    private void listenToComputeAERButtonClicks() {
+        Button button = (Button) findViewById(R.id.compute_aer);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View button) {
+                presenter.computeAER();
             }
         });
     }
