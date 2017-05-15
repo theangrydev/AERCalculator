@@ -16,7 +16,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.contrib.PickerActions.setDate;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static io.github.theangrydev.aercalculator.WithIndex.withIndex;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.*;
 import static org.joda.time.DateTime.now;
 import static org.joda.time.format.DateTimeFormat.forPattern;
 
@@ -90,7 +90,16 @@ public class AERCalculatorApplicationTest {
     }
 
     private void setDatePicker(int year, int monthOfYear, int dayOfMonth) {
-        onView(withClassName(equalTo(DatePicker.class.getName()))).perform(setDate(year, monthOfYear, dayOfMonth));
-        onView(withText("OK")).perform(click());
+        onView(datePicker()).perform(setDate(year, monthOfYear, dayOfMonth));
+        onView(datePickerDone()).perform(click());
+    }
+
+    private Matcher<View> datePicker() {
+        return withClassName(equalTo(DatePicker.class.getName()));
+    }
+
+    // TODO: #3 different API levels have a different name for the button, is there a better way to click it?
+    private Matcher<View> datePickerDone() {
+        return withText(anyOf(is("OK"), is("Set"), is("Done")));
     }
 }

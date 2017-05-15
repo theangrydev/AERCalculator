@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
           android:id="@+id/contribution"
           android:layout_width="match_parent"
           android:layout_height="match_parent"
@@ -36,6 +36,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:inputType="numberDecimal"/>
+        android:inputType="numberDecimal"/><!-- TODO: #2 API 10 has an issue with this, "text" works OK -->
 
-</TableRow>
+</LinearLayout>

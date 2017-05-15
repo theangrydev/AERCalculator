@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import io.github.theangrydev.aercalculator.R;
 import io.github.theangrydev.aercalculator.model.Contribution;
@@ -37,27 +38,16 @@ public class ContributionAdapter extends ArrayAdapter<Contribution> {
     }
 
     private void updateAmount(final int position, View convertView, Contribution contribution) {
-        TextView amount = (TextView) convertView.findViewById(R.id.input_amount);
+        EditText amount = (EditText) convertView.findViewById(R.id.input_amount);
         amount.setText(contributionAmount(contribution));
-        clearOnFocus(amount);
-        listenToAmountChanges(position, amount);
+        amount.setSelectAllOnFocus(true); // TODO: #4 only listen on create not update
+        listenToAmountChanges(position, amount); // TODO: #4 only listen on create not update
     }
 
     private void updateDate(final int position, View convertView, Contribution contribution) {
         Button date = (Button) convertView.findViewById(R.id.input_date);
         date.setText(contributionDate(contribution));
-        listenToContributionDateButtonClicks(position, date);
-    }
-
-    private void clearOnFocus(final TextView textView) {
-        textView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean hasFocus) {
-                if (hasFocus) {
-                    textView.setText("");
-                }
-            }
-        });
+        listenToContributionDateButtonClicks(position, date); // TODO: #4 only listen on create not update
     }
 
     private String contributionAmount(Contribution contribution) {
