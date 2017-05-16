@@ -2,10 +2,8 @@ package io.github.theangrydev.aercalculator.view;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.DialogFragment;
 import android.widget.DatePicker;
 import org.joda.time.LocalDate;
@@ -24,11 +22,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         restoreArguments();
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            return honeyCombAndAboveDialog();
-        } else {
-            return belowHoneyCombDialog();
-        }
+        return datePickerFialog();
     }
 
     @Override
@@ -52,23 +46,9 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         initialDate = (LocalDate) arguments.getSerializable(INITIAL_DATE);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
-    private Dialog honeyCombAndAboveDialog() {
+    private Dialog datePickerFialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, initialDate.getYear(), initialDate.getMonthOfYear(), initialDate.getDayOfMonth());
         datePickerDialog.getDatePicker().setMaxDate(maxDate.toDateTimeAtCurrentTime().getMillis());
         return datePickerDialog;
-    }
-
-    private Dialog belowHoneyCombDialog() {
-        return new DatePickerDialog(getActivity(), this, initialDate.getYear(), initialDate.getMonthOfYear(), initialDate.getDayOfMonth()) {
-
-            @Override
-            public void onDateChanged(DatePicker view, int year, int month, int dayOfMonth) {
-                LocalDate dateTime = new LocalDate(year, month + 1, dayOfMonth);
-                if (dateTime.isAfter(maxDate)) {
-                    view.updateDate(maxDate.getYear(), maxDate.getMonthOfYear() - 1, maxDate.getDayOfMonth());
-                }
-            }
-        };
     }
 }
