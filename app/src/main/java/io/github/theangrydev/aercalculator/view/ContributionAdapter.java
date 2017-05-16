@@ -30,24 +30,28 @@ public class ContributionAdapter extends ArrayAdapter<Contribution> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         Contribution contribution = getItem(position);
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.contribution, parent, false);
+            convertView = createView(parent);
         }
-        updateDate(position, convertView, contribution);
-        updateAmount(position, convertView, contribution);
+        Button dateButton = dateButton(convertView);
+        dateButton.setTag(position);
+        dateButton.setText(contributionDate(contribution));
+
+        EditText amountText = amountEditText(convertView);
+        amountText.setTag(position);
+        amountText.setText(contributionAmount(contribution));
         return convertView;
     }
 
-    private void updateAmount(final int position, View convertView, Contribution contribution) {
-        EditText amount = (EditText) convertView.findViewById(R.id.input_amount);
-        amount.setText(contributionAmount(contribution));
-        amount.setSelectAllOnFocus(true); // TODO: #4 only listen on create not update
-        listenToAmountChanges(position, amount); // TODO: #4 only listen on create not update
-    }
+    private View createView(ViewGroup parent) {
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.contribution, parent, false);
 
-    private void updateDate(final int position, View convertView, Contribution contribution) {
-        Button date = (Button) convertView.findViewById(R.id.input_date);
-        date.setText(contributionDate(contribution));
-        listenToContributionDateButtonClicks(position, date); // TODO: #4 only listen on create not update
+        EditText amountText = amountEditText(view);
+        amountText.setSelectAllOnFocus(true);
+        listenToAmountChanges(amountText);
+
+        Button dateButton = dateButton(view);
+        listenToContributionDateButtonClicks(dateButton);
+        return view;
     }
 
     private String contributionAmount(Contribution contribution) {
@@ -78,22 +82,30 @@ public class ContributionAdapter extends ArrayAdapter<Contribution> {
         return getContext().getString(id);
     }
 
-    private void listenToContributionDateButtonClicks(final int position, Button date) {
-        date.setOnClickListener(new View.OnClickListener() {
+    private void listenToContributionDateButtonClicks(final Button dateButton) {
+        dateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                presenter.showContributionDatePicker(position);
+                presenter.showContributionDatePicker((Integer) dateButton.getTag());
             }
         });
     }
 
-    private void listenToAmountChanges(final int position, TextView amount) {
-        amount.addTextChangedListener(new TextChangedWatcher() {
+    private void listenToAmountChanges(final TextView amountText) {
+        amountText.addTextChangedListener(new TextChangedWatcher() {
 
             @Override
             protected void textChanged(String text) {
-                presenter.setContributionAmount(position, text);
+                presenter.setContributionAmount((Integer) amountText.getTag(), text);
             }
         });
+    }
+
+    private Button dateButton(View convertView) {
+        return (Button) convertView.findViewById(R.id.input_date);
+    }
+
+    private EditText amountEditText(View convertView) {
+        return (EditText) convertView.findViewById(R.id.input_amount);
     }
 }
