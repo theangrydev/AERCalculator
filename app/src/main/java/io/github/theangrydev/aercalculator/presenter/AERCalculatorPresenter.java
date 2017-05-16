@@ -21,7 +21,7 @@ public class AERCalculatorPresenter {
 
     public void initialise() {
         setDateToday(LocalDate.now());
-        displayContributions();
+        view.displayContributions(portfolio.contributions());
     }
 
     public void computeAER() {
@@ -30,7 +30,7 @@ public class AERCalculatorPresenter {
             return;
         }
         portfolio.removeIncompleteContributions();
-        displayContributions();
+        view.displayContributions(portfolio.contributions());
         try {
             double aer = aerCalculator.computeAER(portfolio.dateToday(), portfolio.valueToday(), portfolio.contributions());
             view.displayAER(aer);
@@ -41,7 +41,7 @@ public class AERCalculatorPresenter {
 
     public void addContribution() {
         portfolio.addEmptyContribution();
-        displayContributions();
+        view.displayContributions(portfolio.contributions());
         view.selectContribution(portfolio.contributions().size() - 1);
     }
 
@@ -78,13 +78,9 @@ public class AERCalculatorPresenter {
         portfolio.setValueToday(parseDouble(value));
     }
 
-    private void displayContributions() {
-        view.displayContributions(portfolio.contributions());
-    }
-
     private void setContributionDate(int index, LocalDate date) {
         portfolio.setContributionDate(index, date);
-        displayContributions();
+        view.displayContributions(portfolio.contributions());
     }
 
     private Double parseDouble(String amount) {
