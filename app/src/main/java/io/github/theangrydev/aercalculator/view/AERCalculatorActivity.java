@@ -51,9 +51,12 @@ public class AERCalculatorActivity extends AppCompatActivity implements AERCalcu
 
     @Override
     public void displayContributions(List<Contribution> contributions) {
-        ListView contributionsTable = (ListView) findViewById(R.id.contributions_table);
-        ContributionAdapter contributionAdapter = new ContributionAdapter(this, contributions, presenter);
-        contributionsTable.setAdapter(contributionAdapter);
+        contributionsTable().setAdapter(new ContributionAdapter(this, contributions, presenter));
+    }
+
+    @Override
+    public void selectContribution(int selectedIndex) {
+        contributionsTable().setSelection(selectedIndex);
     }
 
     @Override
@@ -79,12 +82,6 @@ public class AERCalculatorActivity extends AppCompatActivity implements AERCalcu
     public void displayTodayDate(LocalDate todayDate) {
         Button today = (Button) findViewById(R.id.today_button);
         today.setText(dateFormat().print(todayDate));
-    }
-
-    @Override
-    public void scrollToBottomOfContributions() {
-        ListView contributionsTable = (ListView) findViewById(R.id.contributions_table);
-        contributionsTable.setSelection(contributionsTable.getCount() - 1);
     }
 
     private Portfolio loadPortfolio(Bundle savedInstanceState) {
@@ -142,5 +139,9 @@ public class AERCalculatorActivity extends AppCompatActivity implements AERCalcu
                 presenter.setValueToday(text);
             }
         });
+    }
+
+    private ListView contributionsTable() {
+        return (ListView) findViewById(R.id.contributions_table);
     }
 }

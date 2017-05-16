@@ -42,7 +42,7 @@ public class AERCalculatorPresenter {
     public void addContribution() {
         portfolio.addEmptyContribution();
         displayContributions();
-        view.scrollToBottomOfContributions();
+        view.selectContribution(portfolio.contributions().size() - 1);
     }
 
     public void showTodayDatePicker() {

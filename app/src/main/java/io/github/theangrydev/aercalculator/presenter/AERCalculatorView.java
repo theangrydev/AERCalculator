@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface AERCalculatorView {
     void displayContributions(List<Contribution> contributions);
+    void selectContribution(int selectedIndex);
     void displayAER(double aer);
     void displayUnknownAER();
     void displayDatePicker(DatePickerAction action, LocalDate initialDate, LocalDate maxDate);
     void displayTodayDate(LocalDate todayDate);
-    void scrollToBottomOfContributions();
 }
