@@ -32,8 +32,6 @@ dependencies {
     compile group: 'com.android.support', name: 'appcompat-v7', version: '25.3.1'
     compile group: 'com.android.support', name: 'support-v4', version: '25.3.1'
     compile group: 'net.danlew', name: 'android.joda', version: '2.9.9'
-    compile group: 'io.reactivex.rxjava2', name: 'rxandroid', version: '2.0.1'
-    compile group: 'io.reactivex.rxjava2', name: 'rxjava', version: '2.1.0'
 
     androidTestCompile group: 'com.android.support.test.espresso', name: 'espresso-core', version: '2.2.2'
     androidTestCompile(group: 'com.android.support.test.espresso', name: 'espresso-contrib', version: '2.2.2') {
