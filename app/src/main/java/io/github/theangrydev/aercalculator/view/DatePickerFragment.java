@@ -22,7 +22,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         restoreArguments();
-        return datePickerFialog();
+        return datePickerDialog();
     }
 
     @Override
@@ -46,7 +46,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         initialDate = (LocalDate) arguments.getSerializable(INITIAL_DATE);
     }
 
-    private Dialog datePickerFialog() {
+    private Dialog datePickerDialog() {
         DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), this, initialDate.getYear(), initialDate.getMonthOfYear(), initialDate.getDayOfMonth());
         datePickerDialog.getDatePicker().setMaxDate(maxDate.toDateTimeAtCurrentTime().getMillis());
         return datePickerDialog;
