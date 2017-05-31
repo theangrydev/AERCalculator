@@ -7,3 +7,4 @@
 /build
 /captures
 .externalNativeBuild
+checkstyle-idea.xml
