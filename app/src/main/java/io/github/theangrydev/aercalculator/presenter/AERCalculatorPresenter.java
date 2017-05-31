@@ -3,7 +3,8 @@ package io.github.theangrydev.aercalculator.presenter;
 import io.github.theangrydev.aercalculator.model.AERCalculator;
 import io.github.theangrydev.aercalculator.model.Portfolio;
 import io.github.theangrydev.aercalculator.model.UnknownAERException;
-import io.github.theangrydev.aercalculator.view.DatePickerAction;
+import io.github.theangrydev.aercalculator.view.SetContributionDate;
+import io.github.theangrydev.aercalculator.view.SetDateToday;
 import org.joda.time.LocalDate;
 
 public class AERCalculatorPresenter {
@@ -46,27 +47,17 @@ public class AERCalculatorPresenter {
     }
 
     public void showTodayDatePicker() {
-        view.displayDatePicker(new DatePickerAction() {
-            @Override
-            public void onDateSet(AERCalculatorPresenter presenter, LocalDate date) {
-                presenter.setDateToday(date);
-            }
-        }, portfolio.dateToday(), NO_MAX_DATE);
+        view.displayDatePicker(new SetDateToday(), portfolio.dateToday(), NO_MAX_DATE);
     }
 
-    private void setDateToday(LocalDate date) {
+    public void setDateToday(LocalDate date) {
         portfolio.setDateToday(date);
         view.displayTodayDate(portfolio.dateToday());
     }
 
     public void showContributionDatePicker(final int contributionIndex) {
         LocalDate maxDate = portfolio.dateToday().minusDays(1);
-        view.displayDatePicker(new DatePickerAction() {
-            @Override
-            public void onDateSet(AERCalculatorPresenter presenter, LocalDate date) {
-                presenter.setContributionDate(contributionIndex, date);
-            }
-        }, maxDate, maxDate);
+        view.displayDatePicker(new SetContributionDate(contributionIndex), maxDate, maxDate);
     }
 
     public void setContributionAmount(int index, String amount) {
@@ -78,7 +69,7 @@ public class AERCalculatorPresenter {
         portfolio.setValueToday(parseDouble(value));
     }
 
-    private void setContributionDate(int index, LocalDate date) {
+    public void setContributionDate(int index, LocalDate date) {
         portfolio.setContributionDate(index, date);
         view.displayContributions(portfolio.contributions());
     }
